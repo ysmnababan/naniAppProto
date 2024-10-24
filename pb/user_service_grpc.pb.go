@@ -19,10 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_Login_FullMethodName      = "/user.UserService/Login"
-	UserService_Register_FullMethodName   = "/user.UserService/Register"
-	UserService_GetUser_FullMethodName    = "/user.UserService/GetUser"
-	UserService_UpdateUser_FullMethodName = "/user.UserService/UpdateUser"
+	UserService_Login_FullMethodName         = "/user.UserService/Login"
+	UserService_Register_FullMethodName      = "/user.UserService/Register"
+	UserService_GetUser_FullMethodName       = "/user.UserService/GetUser"
+	UserService_UpdateUser_FullMethodName    = "/user.UserService/UpdateUser"
+	UserService_GetContact_FullMethodName    = "/user.UserService/GetContact"
+	UserService_CreateContact_FullMethodName = "/user.UserService/CreateContact"
+	UserService_EditNickname_FullMethodName  = "/user.UserService/EditNickname"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -33,6 +36,9 @@ type UserServiceClient interface {
 	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 	GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
 	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
+	GetContact(ctx context.Context, in *GetContactReq, opts ...grpc.CallOption) (*GetContactResp, error)
+	CreateContact(ctx context.Context, in *CreateContactReq, opts ...grpc.CallOption) (*CreateContactResp, error)
+	EditNickname(ctx context.Context, in *EditNicknameReq, opts ...grpc.CallOption) (*EditNicknameResp, error)
 }
 
 type userServiceClient struct {
@@ -83,6 +89,36 @@ func (c *userServiceClient) UpdateUser(ctx context.Context, in *UpdateUserReq, o
 	return out, nil
 }
 
+func (c *userServiceClient) GetContact(ctx context.Context, in *GetContactReq, opts ...grpc.CallOption) (*GetContactResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetContactResp)
+	err := c.cc.Invoke(ctx, UserService_GetContact_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) CreateContact(ctx context.Context, in *CreateContactReq, opts ...grpc.CallOption) (*CreateContactResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateContactResp)
+	err := c.cc.Invoke(ctx, UserService_CreateContact_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) EditNickname(ctx context.Context, in *EditNicknameReq, opts ...grpc.CallOption) (*EditNicknameResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EditNicknameResp)
+	err := c.cc.Invoke(ctx, UserService_EditNickname_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations should embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -91,6 +127,9 @@ type UserServiceServer interface {
 	Register(context.Context, *RegisterReq) (*RegisterResp, error)
 	GetUser(context.Context, *GetUserReq) (*GetUserResp, error)
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
+	GetContact(context.Context, *GetContactReq) (*GetContactResp, error)
+	CreateContact(context.Context, *CreateContactReq) (*CreateContactResp, error)
+	EditNickname(context.Context, *EditNicknameReq) (*EditNicknameResp, error)
 }
 
 // UnimplementedUserServiceServer should be embedded to have
@@ -111,6 +150,15 @@ func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserReq) (*Ge
 }
 func (UnimplementedUserServiceServer) UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedUserServiceServer) GetContact(context.Context, *GetContactReq) (*GetContactResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContact not implemented")
+}
+func (UnimplementedUserServiceServer) CreateContact(context.Context, *CreateContactReq) (*CreateContactResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateContact not implemented")
+}
+func (UnimplementedUserServiceServer) EditNickname(context.Context, *EditNicknameReq) (*EditNicknameResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditNickname not implemented")
 }
 func (UnimplementedUserServiceServer) testEmbeddedByValue() {}
 
@@ -204,6 +252,60 @@ func _UserService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetContactReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetContact(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetContact_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetContact(ctx, req.(*GetContactReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_CreateContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateContactReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreateContact(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_CreateContact_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreateContact(ctx, req.(*CreateContactReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_EditNickname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditNicknameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EditNickname(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EditNickname_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EditNickname(ctx, req.(*EditNicknameReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -226,6 +328,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUser",
 			Handler:    _UserService_UpdateUser_Handler,
+		},
+		{
+			MethodName: "GetContact",
+			Handler:    _UserService_GetContact_Handler,
+		},
+		{
+			MethodName: "CreateContact",
+			Handler:    _UserService_CreateContact_Handler,
+		},
+		{
+			MethodName: "EditNickname",
+			Handler:    _UserService_EditNickname_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

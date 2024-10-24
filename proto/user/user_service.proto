@@ -7,6 +7,43 @@ service UserService{
     rpc Register(RegisterReq) returns (RegisterResp);
     rpc GetUser(GetUserReq) returns (GetUserResp);
     rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
+
+    rpc GetContact(GetContactReq) returns (GetContactResp);
+    rpc CreateContact(CreateContactReq) returns (CreateContactResp);
+    rpc EditNickname(EditNicknameReq) returns (EditNicknameResp);
+}
+
+message GetContactReq {
+    string user_id = 1;
+}
+
+message Phonebook {
+    string phonebook_id = 1;
+    string user_id = 2;
+    string contact_id = 3;
+    string nickname = 4;
+}
+
+message GetContactResp{
+    repeated Phonebook phonebooks = 1;
+}
+
+message CreateContactReq {
+    string phone_number = 1;
+    string user_id = 2;
+}
+
+message CreateContactResp {
+    Phonebook contact = 1;
+}
+
+message EditNicknameReq{
+    string phonebook_id = 1;
+    string nickname = 2;
+}
+
+message EditNicknameResp{
+    Phonebook contact = 1;
 }
 
 message LoginReq {
